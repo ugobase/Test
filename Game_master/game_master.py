@@ -40,6 +40,6 @@ if __name__ == '__main__':
     app.run(debug=True, port=5002, host="0.0.0.0")
 
 
-# Debug mode: Enabling debug mode with debug=True can be helpful during development, but it's recommended to disable it in production. Debug mode may expose sensitive information and pose security risks.
+# Debug mode: Enabling debug mode with debug=True can be helpful during development, but it's recommended to disable it in production. Debug mode may expose sensitive information and pose security risks..
 
 
