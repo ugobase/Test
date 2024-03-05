@@ -1,0 +1,22 @@
+
+version: "3.7"
+
+services:
+  player_server:
+    build: ./Player
+    container_name: player
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5000/health || exit 1"]
+    
+  master_server:
+    build: ./Game_master
+    container_name: master
+    restart: unless-stopped
+    ports:
+      - "5004:5004"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5004/health || exit 1"]
+
