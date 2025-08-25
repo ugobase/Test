@@ -51,6 +51,13 @@ jobs:
         images: ${{ vars.DOCKERHUB_USERNAME }}/design
         tags: sha-${{ github.sha }}
 
+    - name: Trivy scan source code from Game_master
+      uses: aquasecurity/trivy-action@0.28.0
+      with:
+        scan-type: fs
+        directory: ./Game_master
+        severity: CRITICAL,HIGH
+
 
     - name: Build and push from Game_master
       uses: docker/build-push-action@v6
@@ -60,12 +67,29 @@ jobs:
         push: true
         tags: ${{ steps.meta_Game_master.outputs.tags }}
 
+    - name: Run Trivy vulnerability scanner on built image
+      uses: aquasecurity/trivy-action@0.28.0
+      with:
+          image-ref: ${{ steps.meta_Game_master.outputs.tags }}
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
     - name: Extract metadata from Player
       id: meta_player
       uses: docker/metadata-action@v5
       with:
         images: ${{ vars.DOCKERHUB_USERNAME }}/design_server
         tags: sha-${{ github.sha }}
+
+    - name: Trivy scan source code from Player
+      uses: aquasecurity/trivy-action@0.28.0
+      with:
+        scan-type: fs
+        directory: ./Player
+        severity: CRITICAL,HIGH
 
     - name: Build and push from Player
       uses: docker/build-push-action@v6
@@ -74,3 +98,13 @@ jobs:
         file: ./Player/Dockerfile
         push: true
         tags: ${{ steps.meta_player.outputs.tags }}
+
+    - name: Run Trivy vulnerability scanner on built image
+      uses: aquasecurity/trivy-action@0.28.0
+      with:
+          image-ref: ${{ steps.meta_player.outputs.tags }}
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
