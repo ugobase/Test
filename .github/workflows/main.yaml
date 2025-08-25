@@ -11,5 +11,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-    - name: List files
-      run: ls -R
+    - name: List Directories/files
+      run: |
+        cd /github/workflows/Game_master
+        ls -la
+
