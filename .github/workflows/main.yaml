@@ -121,11 +121,14 @@ jobs:
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
 
       # 2. Set up Minikube
+      - name: Disable swap
+        run: sudo swapoff -a
+
       - name: Start Minikube
         uses: medyagh/setup-minikube@latest
         id: minikube
         with:
-          cache: false
+          cache: true
           minikube-version: latest
           driver: docker
           container-runtime: docker
@@ -134,7 +137,9 @@ jobs:
           memory: 3072m
           cni: bridge
           addons: registry,ingress
-          extra-config: 'kubelet.max-pods=10'
+          extra-config: |
+            kubelet.cgroup-driver=systemd
+            kubelet.max-pods=10
           feature-gates: 'DownwardAPIHugePages=true'
           wait: true
           start-args: "--nodes=1"
