@@ -127,10 +127,9 @@ jobs:
         with:
           cache: false
           minikube-version: latest
-          driver: hyperv
+          driver: docker
           container-runtime: docker
           kubernetes-version: stable
-          nodes: 1
           cpus: 2
           memory: 3072m
           cni: bridge
@@ -138,3 +137,4 @@ jobs:
           extra-config: 'kubelet.max-pods=10'
           feature-gates: 'DownwardAPIHugePages=true'
           wait: true
+          start-args: "--nodes=2"
