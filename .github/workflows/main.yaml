@@ -58,7 +58,6 @@ jobs:
         file: ./Game_master/Dockerfile
         push: true
         tags: ${{ steps.meta_Game_master.outputs.tags }}
-        provenance: mode=maximum
 
     - name: Extract metadata from Player
       id: meta_player
@@ -73,4 +72,3 @@ jobs:
         file: ./Player/Dockerfile
         push: true
         tags: ${{ steps.meta_player.outputs.tags }}
-        provenance: mode=maximum
