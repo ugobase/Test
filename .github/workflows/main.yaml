@@ -48,7 +48,8 @@ jobs:
       id: meta_Game_master
       uses: docker/metadata-action@v5
       with:
-        images: ${{ vars.DOCKERHUB_USERNAME }}/design:${{ github.sha }}
+        images: ${{ vars.DOCKERHUB_USERNAME }}/design
+        tags: sha-${{ github.sha }}
 
 
     - name: Build and push from Game_master
@@ -63,7 +64,8 @@ jobs:
       id: meta_player
       uses: docker/metadata-action@v5
       with:
-        images: ${{ vars.DOCKERHUB_USERNAME }}/design_server:${{ github.sha }}
+        images: ${{ vars.DOCKERHUB_USERNAME }}/design_server
+        tags: sha-${{ github.sha }}
 
     - name: Build and push from Player
       uses: docker/build-push-action@v6
