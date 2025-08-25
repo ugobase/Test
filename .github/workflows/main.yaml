@@ -112,3 +112,29 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+
+  minikube-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout your repository
+      - name: Checkout code
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608
+
+      # 2. Set up Minikube
+      - name: Start Minikube
+        uses: medyagh/setup-minikube@latest
+        id: minikube
+        with:
+          cache: false
+          minikube-version: latest
+          driver: hyperv
+          container-runtime: docker
+          kubernetes-version: stable
+          nodes: 1
+          cpus: 2
+          memory: 3072m
+          cni: bridge
+          addons: registry,ingress
+          extra-config: 'kubelet.max-pods=10'
+          feature-gates: 'DownwardAPIHugePages=true'
+          wait: true
