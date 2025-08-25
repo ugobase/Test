@@ -124,6 +124,10 @@ jobs:
       - name: Disable swap
         run: sudo swapoff -a
 
+      - name: Clean up Docker
+        run: docker system prune -af
+
+
       - name: Start Minikube
         uses: medyagh/setup-minikube@latest
         id: minikube
