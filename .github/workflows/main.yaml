@@ -31,6 +31,10 @@ jobs:
       uses: docker/setup-qemu-action@v3
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
+    - name: Validate build configuration
+      uses: docker/build-push-action@v6
+      with:
+        call: check
   
   build:
     needs: checkout
@@ -44,13 +48,27 @@ jobs:
         username: ${{ vars.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+    - name: Extract metadata from Game_master
+      id: meta_Game_master
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ vars.DOCKERHUB_USERNAME }}/design:${{ github.sha }}
+
+
     - name: Build and push from Game_master
       uses: docker/build-push-action@v6
       with:
         context: ./Game_master
         file: ./Game_master/Dockerfile
         push: true
-        tags: ${{ vars.DOCKERHUB_USERNAME }}/design:${{ github.sha }}
+        tags: ${{ steps.meta_Game_master.outputs.tags }}
+        provenance: mode=maximum
+
+    - name: Extract metadata from Player
+      id: meta_player
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ vars.DOCKERHUB_USERNAME }}/design_server:${{ github.sha }}
 
     - name: Build and push from Player
       uses: docker/build-push-action@v6
@@ -58,4 +76,5 @@ jobs:
         context: ./Player
         file: ./Player/Dockerfile
         push: true
-        tags: ${{ vars.DOCKERHUB_USERNAME }}/design_server:${{ github.sha }}
+        tags: ${{ steps.meta_player.outputs.tags }}
+        provenance: mode=maximum
